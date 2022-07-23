@@ -1,0 +1,165 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "post_id",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "in_favor",
+                "type": "bool"
+            }
+        ],
+        "name": "addBet",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "text",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "media",
+                "type": "string"
+            },
+            {
+                "internalType": "uint256",
+                "name": "date",
+                "type": "uint256"
+            }
+        ],
+        "name": "addPost",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "post_id",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "text",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "link",
+                "type": "string"
+            }
+        ],
+        "name": "addValidityMedia",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "post_id",
+                "type": "uint256"
+            }
+        ],
+        "name": "enableVotes",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "post_id",
+                "type": "uint256"
+            }
+        ],
+        "name": "getPost",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "post_id",
+                "type": "uint256"
+            }
+        ],
+        "name": "terminate",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "post_id",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "is_valid",
+                "type": "bool"
+            }
+        ],
+        "name": "vote",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

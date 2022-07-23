@@ -1,9 +1,13 @@
 from App.Interface import Interface
-from App.blockchainAPI import BlockchainAPI
-from App.activePostsManager import ActivePostsManager
+from App.BlockchainAPI import BlockchainAPI
+from App.ActivePostsManager import ActivePostsManager
+import App.config as config
+import os
 
-activePostsManager = ActivePostsManager()
-BlockchainAPI = BlockchainAPI()
+blockchainAPI = BlockchainAPI(os.getenv("CONTRACT_ADDRESS"))
+activePostsManager = ActivePostsManager(blockchainAPI)
+interface = Interface(activePostsManager, blockchainAPI)
 
-interface = Interface(activePostsManager, BlockchainAPI)
+config.address, config.private_key = interface.registerUser()
+
 interface.run()

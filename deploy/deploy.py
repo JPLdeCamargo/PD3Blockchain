@@ -84,6 +84,18 @@ print("Contract Address:", tx_receipt.contractAddress)
 with open(".env", "a") as file:
     file.write("\nexport CONTRACT_ADDRESS=" + tx_receipt.contractAddress)
 
+with open("../App/abi.json", "w") as file:
+    json.dump(abi, file)
+
+
+
+
+
+
+
+
+
+
 # Working with deployed Contracts
 simple_storage = w3.eth.contract(address=tx_receipt.contractAddress, abi=abi)
 print(f"Initial Stored Value {simple_storage.functions.retrieve().call()}")
