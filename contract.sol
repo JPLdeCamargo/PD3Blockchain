@@ -72,6 +72,7 @@ contract ChallengeContract {
     }
 
     function enableVotes(uint256 post_id) public {
+        if (block.timestamp < posts[post_id].end_date) return;
         posts[post_id].votes_enabled = true;
     }
 
@@ -137,8 +138,9 @@ contract ChallengeContract {
         }
     }
 
-    function terminate(uint256 post_id) public {
-        if (block.timestamp < posts[post_id].end_date) return;
+    function terminatePost(uint256 post_id) public {
+        uint votingPeriod = 7 days;
+        if (block.timestamp < posts[post_id].end_date + votingPeriod) return;
         distributeBets(checkValidity(post_id), post_id);
     }
 
