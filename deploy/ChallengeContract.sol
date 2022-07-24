@@ -135,19 +135,24 @@ contract ChallengeContract {
         Post storage p = posts[post_id];
         uint256 size = p.n_bets;
         address[] memory receivers = new address[](size);
+        uint256[] memory receivers_bets = new uint256[](size);
         uint256 n_receivers = 0;
         uint256 total_value = 0;
+        uint256 total_winners = 0;
         for (uint256 i = 0; i < p.n_bets; i++) {
             total_value += p.bets[i].amount;
             if (p.bets[i].in_favor == is_valid)
                 receivers[n_receivers] = p.bets[i].bet_owner;
+            receivers_bets[n_receivers] = p.bets[i].amount;
             n_receivers++;
+            total_winners += p.bets[i].amount;
         }
-        uint256 money_per_winner = total_value / receivers.length;
         for (uint256 i = 0; i < receivers.length; i++) {
-            (bool success, ) = payable(receivers[i]).call{
-                value: money_per_winner
-            }("");
+            uint256 to_receive = (receivers_bets[i] / total_winners) *
+                total_winners;
+            (bool success, ) = payable(receivers[i]).call{value: to_receive}(
+                ""
+            );
             require(success, "Transfer failed.");
         }
     }
