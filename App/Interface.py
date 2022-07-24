@@ -51,7 +51,8 @@ class Interface:
 
     def intGetPost(self):
         post_id = int(input("Declare the post id: \n "))
-        self.__blockchainAPI.getPost(post_id, config.address, config.private_key)
+        post = self.__blockchainAPI.getPost(post_id, config.address, config.private_key)
+        print(post)
 
     def intAddPost(self):
         text = input("What's your chalenge?")
@@ -61,7 +62,7 @@ class Interface:
         date = datetime.datetime.now() + datetime.timedelta(time_in_days)
 
         post_id = self.__blockchainAPI.addPost(text, media_link, date, config.address, config.private_key)
-        self.__activePostsManager.addPost(post_id, date)
+        self.__activePostsManager.addPublishedPost(post_id, date)
 
     def intAddBet(self, post_id):
         post_id = int(input("What's the post id?"))

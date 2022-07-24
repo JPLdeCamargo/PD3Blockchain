@@ -81,8 +81,8 @@ print(f"Done! Contract deployed to {tx_receipt.contractAddress}")
 
 print("Contract Address:", tx_receipt.contractAddress)
 
-with open(".env", "a") as file:
-    file.write("\nexport CONTRACT_ADDRESS=" + tx_receipt.contractAddress)
+with open("../.env", "w") as file:
+    file.write("export CONTRACT_ADDRESS=" + tx_receipt.contractAddress + "\n")
 
 with open("../App/abi.json", "w") as file:
     json.dump(abi, file)

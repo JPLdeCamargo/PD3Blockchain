@@ -1,6 +1,7 @@
 from App.BlockchainAPI import BlockchainAPI
 import App.config as config
 
+
 class ActivePostsManager:
     def __init__(self, blockchainAPI: BlockchainAPI):
         self.__published_posts = []
@@ -17,6 +18,12 @@ class ActivePostsManager:
         for post in self.__published_posts:
             self.__blockchainAPI.enableVotes(post[0], config.private_key)
 
+        for post in self.__betted_posts:
+            self.__blockchainAPI.enableVotes(post[0], config.private_key)
+
     def terminatePosts(self):
+        for post in self.__published_posts:
+            self.__blockchainAPI.terminatePost(post[0], config.private_key)
+
         for post in self.__betted_posts:
             self.__blockchainAPI.terminatePost(post[0], config.private_key)

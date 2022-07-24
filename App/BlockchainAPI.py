@@ -30,25 +30,31 @@ class BlockchainAPI:
         self.runBlockchainFunc(contract_function, address, private_key)
 
     def addBet(self, postID: int, betted_amount: int, address: int, private_key: int):
-        pass
+        contract_function = self.__contract.functions.addBet(postID, betted_amount)
+        self.runBlockchainFunc(contract_function, address, private_key)
 
     def addValidityMedia(self, postID: int, text: str, link: str, address: int, private_key: int):
-        pass
+        contract_function = self.__contract.functions.addValidityMedia(postID, text, link)
+        self.runBlockchainFunc(contract_function, address, private_key)
 
     def vote(self, postID: int, is_valid: bool, address: int, private_key: int):
-        pass
+        contract_function = self.__contract.functions.vote(postID, is_valid)
+        self.runBlockchainFunc(contract_function, address, private_key)
 
     def enableVotes(self, postID: int, address: int, private_key: int):
-        pass
+        contract_function = self.__contract.functions.enableVotes(postID)
+        self.runBlockchainFunc(contract_function, address, private_key)
 
     def terminatePost(self, postID: int, address: int, private_key: int):
-        pass
+        contract_function = self.__contract.functions.terminatePost(postID)
+        self.runBlockchainFunc(contract_function, address, private_key)
 
     def getPost(self, postID: int, address: int, private_key: int):
-        pass
+        return self.__contract.functions.getPost(postID).call()
 
     def runBlockchainFunc(self, contract_function, address, private_key: int):
         transaction = contract_function.buildTransaction(self.getTransaction(address))
         signed_txn = self.__w3.eth.account.sign_transaction(transaction, private_key = private_key)
         tx_hash = self.__w3.eth.send_raw_transaction(signed_txn.rawTransaction)
+        print(tx_hash)
         tx_receipt = self.__w3.eth.wait_for_transaction_receipt(tx_hash)
