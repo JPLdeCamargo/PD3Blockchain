@@ -58,3 +58,4 @@ class BlockchainAPI:
         tx_hash = self.__w3.eth.send_raw_transaction(signed_txn.rawTransaction)
         print(tx_hash)
         tx_receipt = self.__w3.eth.wait_for_transaction_receipt(tx_hash)
+        print(tx_receipt)
