@@ -39,7 +39,7 @@ contract ChallengeContract {
         string memory text,
         string memory media,
         uint256 date
-    ) public {
+    ) public returns (uint256) {
         Post storage post = posts[current_id];
         post.post_id = current_id;
         post.poster_adress = msg.sender;
@@ -50,9 +50,12 @@ contract ChallengeContract {
         post.votes_enabled = false;
         post.n_votes = 0;
         current_id++;
+        return post.post_id;
     }
 
     function addBet(uint256 post_id, bool in_favor) public payable {
+        require(posts[post_id].votes_enabled == false);
+        require(msg.value > 0);
         uint256 temp_index = posts[post_id].n_bets;
         posts[post_id].bets[temp_index] = Bet(msg.sender, msg.value, in_favor);
         posts[post_id].n_bets++;
@@ -117,29 +120,36 @@ contract ChallengeContract {
             score = p.votes[i].is_valid == true ? score : 0;
             vote_score += score;
         }
-        if ((vote_score * 100) / (max_vote_score * 100) > 50) return true;
+        uint256 vote_percentage = (vote_score / max_vote_score) * 100;
+        if (vote_percentage > 50) return true;
         return false;
     }
 
     // distribuir dinheiro entre ganhadores
-    function distributeBets(bool is_valid, uint256 post_id) private {
+    function distributeBets(bool is_valid, uint256 post_id) private {}
+
+    function terminate(uint256 post_id) public payable {
+        if (block.timestamp < posts[post_id].end_date) return;
+        bool is_valid = checkValidity(post_id);
+
         Post storage p = posts[post_id];
-        address[] memory receivers;
+        uint256 size = p.n_bets;
+        address[] memory receivers = new address[](size);
+        uint256 n_receivers = 0;
         uint256 total_value = 0;
         for (uint256 i = 0; i < p.n_bets; i++) {
             total_value += p.bets[i].amount;
             if (p.bets[i].in_favor == is_valid)
-                receivers[receivers.length] = p.bets[i].bet_owner;
+                receivers[n_receivers] = p.bets[i].bet_owner;
+            n_receivers++;
         }
         uint256 money_per_winner = total_value / receivers.length;
         for (uint256 i = 0; i < receivers.length; i++) {
-            payable(receivers[i]).transfer(money_per_winner);
+            (bool success, ) = payable(receivers[i]).call{
+                value: money_per_winner
+            }("");
+            require(success, "Transfer failed.");
         }
-    }
-
-    function terminate(uint256 post_id) public {
-        if (block.timestamp < posts[post_id].end_date) return;
-        distributeBets(checkValidity(post_id), post_id);
     }
 
     function getPost(uint256 post_id)
