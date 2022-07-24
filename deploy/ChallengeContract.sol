@@ -39,7 +39,7 @@ contract ChallengeContract {
         string memory text,
         string memory media,
         uint256 date
-    ) public {
+    ) public returns(uint256) {
         Post storage post = posts[current_id];
         post.post_id = current_id;
         post.poster_adress = msg.sender;
@@ -50,6 +50,7 @@ contract ChallengeContract {
         post.votes_enabled = false;
         post.n_votes = 0;
         current_id++;
+        return post.post_id;
     }
 
     function addBet(uint256 post_id, bool in_favor) public payable {
