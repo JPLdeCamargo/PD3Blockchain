@@ -17,12 +17,13 @@ class BlockchainAPI:
 
         self.__chain_id = 1337
 
-    def getTransaction(self, address):
+    def getTransaction(self, address, wei):
         return {
             "chainId": self.__chain_id,
             "gasPrice": self.__w3.eth.gas_price,
             "from": address,
             "nonce": self.__w3.eth.getTransactionCount(address),
+            "value": wei
         }
 
     def addPost(self, post_text: str, post_media_link: str, date: datetime, address: int, private_key: int):
@@ -30,8 +31,8 @@ class BlockchainAPI:
         self.runBlockchainFunc(contract_function, address, private_key)
 
     def addBet(self, postID: int, betted_amount: int, address: int, private_key: int):
-        contract_function = self.__contract.functions.addBet(postID, betted_amount)
-        self.runBlockchainFunc(contract_function, address, private_key)
+        contract_function = self.__contract.functions.addBet(postID)
+        self.runBlockchainFunc(contract_function, address, private_key, betted_amount)
 
     def addValidityMedia(self, postID: int, text: str, link: str, address: int, private_key: int):
         contract_function = self.__contract.functions.addValidityMedia(postID, text, link)
@@ -52,8 +53,8 @@ class BlockchainAPI:
     def getPost(self, postID: int, address: int, private_key: int):
         return self.__contract.functions.getPost(postID).call()
 
-    def runBlockchainFunc(self, contract_function, address, private_key: int):
-        transaction = contract_function.buildTransaction(self.getTransaction(address))
+    def runBlockchainFunc(self, contract_function, address, private_key: int, wei = 0):
+        transaction = contract_function.buildTransaction(self.getTransaction(address, wei))
         signed_txn = self.__w3.eth.account.sign_transaction(transaction, private_key = private_key)
         tx_hash = self.__w3.eth.send_raw_transaction(signed_txn.rawTransaction)
         print(tx_hash)
